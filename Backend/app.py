@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 import requests # type: ignore
 from flask_cors import CORS
+import os
 
 app = Flask(__name__)
 CORS(app)  # Allow React frontend to access backend
@@ -38,4 +39,5 @@ def get_books():
     return jsonify({'books': books})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
