@@ -1,0 +1,6 @@
+{
+  "Fiction": ["1984", "To Kill a Mockingbird", "The Great Gatsby"],
+  "Fantasy": ["The Hobbit", "Harry Potter and the Sorcerer's Stone", "Eragon"],
+  "Sci-Fi": ["Dune", "Ender's Game", "Foundation"],
+  "Horror": ["Frankenstein", "Dracula", "It"]
+}
