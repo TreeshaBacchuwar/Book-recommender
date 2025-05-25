@@ -35,20 +35,26 @@ export default function BookRecommender() {
   const [search, setSearch] = useState('');
   const [darkMode, setDarkMode] = useState(false);
 
+  // Favorites now store full book objects, not just titles
   const [favorites, setFavorites] = useState(() => {
     const saved = localStorage.getItem('favorites');
     return saved ? JSON.parse(saved) : [];
   });
 
-  const toggleFavorite = (title) => {
-    const updated = favorites.includes(title)
-      ? favorites.filter((b) => b !== title)
-      : [...favorites, title];
+  // Toggle favorite by book object
+  const toggleFavorite = (book) => {
+    const exists = favorites.find((fav) => fav.title === book.title);
+    let updated;
+    if (exists) {
+      updated = favorites.filter((fav) => fav.title !== book.title);
+    } else {
+      updated = [...favorites, book];
+    }
     setFavorites(updated);
     localStorage.setItem('favorites', JSON.stringify(updated));
   };
 
-  const isFavorite = (title) => favorites.includes(title);
+  const isFavorite = (title) => favorites.some((fav) => fav.title === title);
 
   useEffect(() => {
     document.body.className = darkMode ? 'dark' : '';
@@ -65,7 +71,7 @@ export default function BookRecommender() {
     if (!genre) return;
     setLoading(true);
     try {
-      const res = await fetch(`http://localhost:5000/api/books?genre=${genre}`);
+      const res = await fetch(`https://book-recommender-t43y.onrender.com/api/books?genre=${genre}`);
       const data = await res.json();
       setBooks(data.books);
       setFilteredBooks(data.books);
@@ -113,19 +119,19 @@ export default function BookRecommender() {
       {loading && (
         <img
           className="spinner"
-          src="https://www.svgrepo.com/show/70484/loading.svg"
+          src="/loading.png"
           alt="loading"
         />
       )}
 
       {filteredBooks.length > 0 && (
         <div className="book-list">
-          {filteredBooks.map(({ title, google_cover }, idx) => (
-            <div className="book-card" key={idx}>
+          {filteredBooks.map(({ title, google_cover }) => (
+            <div className="book-card" key={title}>
               <BookCover title={title} googleCover={google_cover} />
               <span style={{ flex: 1 }}>{title}</span>
               <button
-                onClick={() => toggleFavorite(title)}
+                onClick={() => toggleFavorite({ title, google_cover })}
                 style={{
                   background: 'none',
                   border: 'none',
@@ -146,12 +152,12 @@ export default function BookRecommender() {
         <>
           <h2 className="favorites-heading">❤️ Your Favorites</h2>
           <div className="book-list favorites-list">
-            {favorites.map((title, idx) => (
-              <div className="book-card" key={`fav-${idx}`}>
-                <BookCover title={title} googleCover={null} />
+            {favorites.map(({ title, google_cover }) => (
+              <div className="book-card" key={title}>
+                <BookCover title={title} googleCover={google_cover} />
                 <span style={{ flex: 1 }}>{title}</span>
                 <button
-                  onClick={() => toggleFavorite(title)}
+                  onClick={() => toggleFavorite({ title, google_cover })}
                   style={{
                     background: 'none',
                     border: 'none',
