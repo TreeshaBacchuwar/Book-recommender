@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
-const BackendUrl = import.meta.env.VITE_Backend_URL;
+const BackendUrl = import.meta.env.VITE_BACKEND_URL;
 
 // Fallback Open Library cover URL
 const getOpenLibraryCoverURL = (title) => {
