@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.pyc
+
+# Flask environment
+.env
+instance/
+
+# Node
+node_modules/
+build/
+
+# React
+.env
+.DS_Store
