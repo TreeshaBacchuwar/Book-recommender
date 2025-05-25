@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
-const apiUrl = import.meta.env.VITE_API_BASE_URL;
+const BackendUrl = import.meta.env.VITE_Backend_URL;
 
 // Fallback Open Library cover URL
 const getOpenLibraryCoverURL = (title) => {
@@ -72,7 +72,7 @@ export default function BookRecommender() {
     if (!genre) return;
     setLoading(true);
     try {
-      const res = await fetch(`${apiUrl}/api/books?genre=${genre}`);
+      const res = await fetch(`${BackendUrl}/api/books?genre=${genre}`);
       const data = await res.json();
       setBooks(data.books);
       setFilteredBooks(data.books);
